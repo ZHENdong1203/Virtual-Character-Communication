@@ -3,6 +3,8 @@ import HomePage from '../components/HomePage.vue'
 import DownloadPage from '../components/DownloadPage.vue'
 import LoginPage from '../components/LoginPage.vue'
 import RegisterPage from '../components/RegisterPage.vue'
+import ProfilePage from '../components/UserProfile.vue'
+import ChatPage from '../components/ChatPage.vue'
 
 const routes = [
   {
@@ -24,6 +26,16 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: RegisterPage
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: ProfilePage
+  },
+  {
+    path: '/chat',
+    name: 'Chat',
+    component: ChatPage
   }
 ]
 

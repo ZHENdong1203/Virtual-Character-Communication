@@ -14,7 +14,7 @@ onMounted(async () => {
     width: 1000,
     height: 700,
     transparent: true, 
-  backgroundColor: 0x000000
+    backgroundColor: 0x000000
   })
 
   live2dContainer.value.appendChild(app.view)

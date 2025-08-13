@@ -10,6 +10,12 @@ from models import User, RememberToken
 from db import SessionLocal
 from datetime import datetime, timedelta
 import urllib.parse
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # 读取 .env 文件
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
@@ -18,7 +24,59 @@ app.secret_key = 'anitalk'  # 用于加密 session
 
 REMEMBER_COOKIE_NAME = 'remember_token'
 REMEMBER_COOKIE_DURATION = timedelta(days=30)
+bcrypt = Bcrypt(app)
 
+@app.route('/change-password', methods=['POST'])
+def change_password():
+    data = request.json
+    confirm_password = data.get('confirmPassword')
+    user_id = int(data.get('userId'))
+
+    if user_id is None or user_id == 0:
+        return jsonify(success=False, message="用户不存在")
+    db: Session = SessionLocal()
+    user = db.query(User).filter(User.id == user_id).first()
+
+    hashed_pw = bcrypt.generate_password_hash(confirm_password).decode('utf-8')
+
+    user.password = hashed_pw
+    db.commit()
+
+    return jsonify(success=True, message="密码修改成功")
+
+@app.route('/change-username', methods=['POST'])
+def change_username():
+    data = request.json
+    username = data.get('userName')
+    user_id = int(data.get('userId'))
+
+    if user_id is None or user_id == 0:
+        return jsonify(success=False, message="用户不存在")
+    db: Session = SessionLocal()
+    user = db.query(User).filter(User.id == user_id).first()
+    user.username = username
+    db.commit()
+    return jsonify(success=True, message="用户名修改成功")
+
+
+@app.route('/change-avatar', methods=['POST'])
+def change_avatar():
+    data = request.get_json()
+    avatar_url = data.get('avatarUrl')
+    user_id = int(data.get('userId'))
+
+    if not avatar_url:
+        return jsonify(success=False, message="头像 URL 不能为空")
+
+    if user_id is None or user_id == 0:
+        return jsonify(success=False, message="用户不存在")
+    db: Session = SessionLocal()
+    user = db.query(User).filter(User.id == user_id).first()
+
+    user.avatar_url = avatar_url
+    db.commit()
+
+    return jsonify(success=True)
 @app.route('/me', methods=['GET'])
 def get_current_user():
     if not g.user:
@@ -26,7 +84,8 @@ def get_current_user():
     return jsonify({
         'loggedIn': True,
         'username': g.user.username,
-        'avatarUrl': g.user.avatar_url
+        'avatarUrl': g.user.avatar_url,
+        'userId': g.user.id
     })
 
 def get_random_dicebear_avatar(username: str) -> str:
@@ -77,7 +136,6 @@ def login():
 
     return resp
 
-
 # 请求前验证登录状态（示例中用 remember_token 验证）
 @app.before_request
 def load_user():
@@ -97,7 +155,6 @@ def load_user():
             g.user = token.user
         else:
             g.user = None
-
 
 # 退出登录，清除 token 和 cookie
 @app.route('/logout', methods=['POST'])
@@ -119,7 +176,6 @@ def logout():
 # 生成纯数字验证码
 def generate_code(length=4):
     return ''.join(random.choices(string.digits, k=length))
-
 
 # 生成验证码图片
 def generate_captcha_image(code):
@@ -144,7 +200,6 @@ def generate_captcha_image(code):
 
     return image
 
-
 @app.route('/captcha')
 def captcha():
     code = generate_code()
@@ -157,7 +212,15 @@ def captcha():
     buf.seek(0)
     return send_file(buf, mimetype='image/png')
 
-bcrypt = Bcrypt(app)
+@app.route('/chat', methods=['POST'])
+def chat():
+    data = request.json
+    user_message = data.get("message", "")
+
+    # 这里调用 GPT 接口
+    reply = f"这是 GPT 的回复：{user_message}"
+
+    return jsonify({"reply": reply})
 
 @app.route('/register', methods=['POST'])
 def register():
