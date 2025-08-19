@@ -24,7 +24,7 @@
                   ? 'bg-cute-purple text-white px-4 py-2 rounded-2xl inline-block'
                   : 'bg-cute-pink text-white px-4 py-2 rounded-2xl inline-block'"
               >
-                {{ msg.text }}
+                {{ msg.textKey ? $t(msg.textKey) : msg.text }}
               </span>
             </div>
           </div>
@@ -77,7 +77,7 @@ import { Live2DModel } from 'pixi-live2d-display'
 
 // 聊天记录
 const messages = ref([
-  { sender: 'bot', text: '你好，我是你的虚拟角色！' }
+  { sender: 'bot', textKey: 'chat.welcome' }
 ])
 const inputText = ref('')
 const isSending = ref(false)
@@ -86,6 +86,12 @@ const live2dContainer = ref(null)
 // Live2D 模型引用
 let live2dModel = null
 let motionGroups = []
+let totalLength = 0
+
+const getRandomInt = (length) => {
+  return Math.floor(Math.random() * length);
+};
+
 
 // 发送消息
 const sendMessage = async () => {
@@ -97,17 +103,19 @@ const sendMessage = async () => {
   isSending.value = true
 
   try {
-    const res = await axios.post('http://127.0.0.1:5000/chat', {
+    const res = await axios.post('http://127.0.0.1:5000/chat/get-gpt-reply', {
       message: userMsg
     })
     const reply = res.data.reply
     messages.value.push({ sender: 'bot', text: reply })
 
-    // GPT 回复时随机触发一个动作
-    if (live2dModel && motionGroups.length > 0) {
-      const randomGroup = motionGroups[Math.floor(Math.random() * motionGroups.length)]
-      live2dModel.motion(randomGroup)
-    }
+    const motionIndex = getRandomInt(totalLength)
+    console.log("动作索引:", motionIndex);
+    live2dModel.motion("", motionIndex);
+
+    live2dModel.once('motionFinish', () => {
+        live2dModel.motion("", 0, true) // loop idle
+      })
 
   } catch (err) {
     messages.value.push({ sender: 'bot', text: '❌ 服务器连接失败，请稍后重试' })
@@ -144,13 +152,17 @@ onMounted(async () => {
   live2dModel.interactive = false
   live2dModel.interactiveChildren = false
 
-  live2dModel.motion("", 5);
-
   // 读取模型动作分组
   if (live2dModel.internalModel?.motionManager) {
-    motionGroups = Object.keys(live2dModel.internalModel.motionManager.definitions)
-    console.log('可用动作组:', motionGroups)
+    const motions = live2dModel.internalModel.motionManager.definitions;
+    totalLength = Object.values(motions).reduce(
+      (sum, group) => sum + group.length,
+      0
+    );
+    console.log("总动作数量:", totalLength);
   }
+
+  live2dModel.motion("", 0, true)
 
   app.ticker.add(() => {
     live2dModel.update(app.ticker.deltaMS)

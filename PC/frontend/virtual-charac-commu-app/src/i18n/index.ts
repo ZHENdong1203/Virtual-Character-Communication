@@ -73,6 +73,9 @@ const messages = {
       chooseAvatar: '选择一个头像',
       newPassword: '新密码',
       confirmPassword: '确认新密码'
+    },
+    chat:{
+      welcome: '欢迎来到AniTalk!'
     }
   },
   en: {

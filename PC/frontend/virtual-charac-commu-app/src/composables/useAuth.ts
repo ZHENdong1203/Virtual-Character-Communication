@@ -7,7 +7,7 @@ const userInfo = ref<{ userId: number; username: string; avatarUrl: string } | n
 
 const fetchUser = async () => {
   try {
-    const res = await axios.get('http://localhost:5000/me', {
+    const res = await axios.get('http://localhost:5000/user/me', {
       withCredentials: true
     })
     isLoggedIn.value = res.data.loggedIn

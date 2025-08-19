@@ -191,7 +191,7 @@ const submitUsernameChange = async () => {
     return
   }
 
-  const res = await fetch('http://localhost:5000/change-username', {
+  const res = await fetch('http://localhost:5000/user/change-username', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -215,7 +215,7 @@ const submitPasswordChange = async () => {
     return
   }
 
-  const res = await fetch('http://localhost:5000/change-password', {
+  const res = await fetch('http://localhost:5000/user/change-password', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -228,7 +228,7 @@ const submitPasswordChange = async () => {
     alert('密码修改成功！需要重新登陆')
     passwordForm.value.newPassword = ''
     passwordForm.value.confirmPassword = ''
-    await axios.post('http://localhost:5000/logout', {}, { withCredentials: true })
+    await axios.post('http://localhost:5000/auth/logout', {}, { withCredentials: true })
     await fetchUser()
     router.push('/login')
   } else {
@@ -251,7 +251,7 @@ const generateAvatars = () => {
 
 // 选择头像并保存到后端
 const selectAvatar = async (url: string) => {
-  const res = await fetch('http://localhost:5000/change-avatar', {
+  const res = await fetch('http://localhost:5000/user/change-avatar', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

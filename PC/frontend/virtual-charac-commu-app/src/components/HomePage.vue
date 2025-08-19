@@ -6,7 +6,7 @@
     <main class="flex-1 flex items-center justify-center px-4 py-8 pt-28">
       <div class="max-w-4xl mx-auto w-full">
         <div class="text-center text-white">
-          <h1 class="text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-cute-pink to-cute-purple bg-clip-text drop-shadow-lg">
+          <h1 class="text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-cute-pink to-cute-purple bg-clip-text drop-shadow-lg pointer-events-none">
             {{ $t('home.title') }}
           </h1>
           <p class="text-lg lg:text-xl mb-8 text-cute-blue max-w-2xl mx-auto drop-shadow-sm">
