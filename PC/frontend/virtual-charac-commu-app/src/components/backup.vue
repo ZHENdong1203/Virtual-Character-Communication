@@ -5,7 +5,7 @@
       <!-- 左侧侧边栏 -->
       <div
         :class="[
-          'relative z-40 bg-transparent backdrop-blur-md border-r border-cute-pink/50 shadow-2xl transition-all duration-300',
+          'bg-transparent backdrop-blur-md border-r border-cute-pink/50 shadow-2xl transition-all duration-300',
           isSidebarOpen ? 'w-64' : 'w-16'
         ]"
       >
@@ -20,20 +20,13 @@
             >
               ❌
             </button>
-            <span
-              class="absolute left-full ml-2 top-1/2 -translate-y-1/2
-                     bg-black/80 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100
-                     whitespace-nowrap transition-opacity"
-            >
-              关闭列表
-            </span>
           </div>
 
           <!-- 新建聊天 -->
           <div class="p-4">
             <button
               @click="createNewChat"
-              class="w-full py-2 rounded-xl border-2 border-white bg-cute-blue text-white font-bold hover:scale-105 transition-transform"
+              class="w-full py-2 rounded-xl bg-cute-blue text-white font-bold hover:scale-105 transition-transform"
             >
               新建聊天
             </button>
@@ -44,47 +37,15 @@
             <div
               v-for="chat in chatHistory"
               :key="chat.id"
-              class="group relative p-2 rounded-lg cursor-pointer transition-colors flex justify-between items-center"
+              @click="switchChat(chat.id)"
+              class="p-2 rounded-lg cursor-pointer transition-colors"
               :class="chat.id === currentChatId
                 ? 'bg-cute-pink text-white'
                 : 'bg-white/10 text-white hover:bg-cute-purple/40'"
             >
-              <!-- 点击切换聊天 -->
-              <div @click="switchChat(chat.id)" class="flex-1 truncate">
-                {{ chat.title }}
-              </div>
-
-              <!-- 三点按钮（仅 hover 时显示） -->
-              <div class="opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  @click="toggleMenu(chat.id)"
-                  class="p-1 rounded hover:bg-white/20"
-                >
-                  ⋮
-                </button>
-              </div>
-
-              <!-- 下拉菜单 -->
-              <div
-                v-if="menuChatId === chat.id"
-                class="absolute right-2 top-full mt-1 bg-black/80 text-white rounded-lg shadow-lg z-50 w-28"
-              >
-                <div
-                  @click="renameChat(chat.id)"
-                  class="px-3 py-2 hover:bg-white/20 cursor-pointer rounded-t-lg"
-                >
-                  重命名
-                </div>
-                <div
-                  @click="deleteChat(chat.id)"
-                  class="px-3 py-2 hover:bg-white/20 cursor-pointer rounded-b-lg text-red-400"
-                >
-                  删除
-                </div>
-              </div>
+              {{ chat.title }}
             </div>
           </div>
-
         </div>
 
         <!-- 收起状态 -->
@@ -126,7 +87,7 @@
       </div>
 
       <!-- 右侧内容 -->
-      <main class="relative z-0 flex-1 flex flex-col px-4 overflow-hidden">
+      <main class="flex-1 flex flex-col px-4 overflow-hidden">
         <div class="flex-1 flex flex-col lg:flex-row gap-4">
           <!-- 左侧 Live2D -->
           <div
@@ -210,7 +171,8 @@ const live2dContainer = ref(null)
 // 侧边栏 & 历史聊天
 const isSidebarOpen = ref(false)
 const chatHistory = ref([
-  { id: 1, title: '聊天 1', messages: [{ sender: 'bot', textKey: 'chat.welcome' }] }
+  { id: 1, title: '聊天 1', messages: [{ sender: 'bot', text: '欢迎回来' }] },
+  { id: 2, title: '聊天 2', messages: [{ sender: 'bot', text: '嗨，又见面了' }] }
 ])
 const currentChatId = ref(1)
 
@@ -219,7 +181,7 @@ const createNewChat = () => {
   chatHistory.value.push({
     id: newId,
     title: `聊天 ${newId}`,
-    messages: [{ sender: 'bot', textKey: 'chat.welcome' }]
+    messages: [{ sender: 'bot', text: '新聊天开始啦' }]
   })
   switchChat(newId)
 }
@@ -229,7 +191,6 @@ const switchChat = (id) => {
   const chat = chatHistory.value.find((c) => c.id === id)
   messages.value = chat ? [...chat.messages] : []
 }
-
 
 // Live2D 模型引用
 let live2dModel = null
@@ -310,7 +271,6 @@ onMounted(async () => {
   })
 })
 </script>
-
 
 <style scoped>
 ::-webkit-scrollbar {
