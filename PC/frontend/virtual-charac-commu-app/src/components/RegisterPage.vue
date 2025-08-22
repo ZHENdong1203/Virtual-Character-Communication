@@ -86,9 +86,9 @@ const form = ref({
   agreed: false,
 })
 
-const captchaUrl = ref('http://localhost:5000/captcha?' + Math.random())
+const captchaUrl = ref('http://localhost:5000/captcha/get-pic?' + Math.random())
 const refreshCaptcha = () => {
-  captchaUrl.value = 'http://localhost:5000/captcha?' + Math.random()
+  captchaUrl.value = 'http://localhost:5000/captcha/get-pic?' + Math.random()
 }
 
 const submitRegister = async () => {
@@ -98,7 +98,7 @@ const submitRegister = async () => {
     return
   }
 
-  const res = await fetch('http://localhost:5000/register', {
+  const res = await fetch('http://localhost:5000/auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

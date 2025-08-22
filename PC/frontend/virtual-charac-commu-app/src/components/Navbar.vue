@@ -80,10 +80,10 @@
           <div v-if="isUserDropdownOpen" class="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-cute-pink/20 z-50">
             <div class="py-2">
               <router-link to="/profile" class="block px-4 py-3 hover:bg-cute-pink/10 transition-colors duration-200 text-cute-purple font-medium">
-                用户中心
+                {{ $t('navbar.userCenter') }}
               </router-link>
               <button @click="logout" class="w-full text-left px-4 py-3 hover:bg-cute-pink/10 transition-colors duration-200 text-red-500 font-medium">
-                退出登录
+                {{ $t('navbar.logout') }}
               </button>
             </div>
           </div>

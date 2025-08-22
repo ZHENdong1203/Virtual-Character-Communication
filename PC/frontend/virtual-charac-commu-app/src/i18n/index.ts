@@ -12,7 +12,9 @@ const messages = {
       home: '首页',
       download: '下载',
       login: '登录',
-      register: '注册'
+      register: '注册',
+      userCenter: '用户中心',
+      logout: '退出登录'
     },
     download: {
       title: '下载 ANiTalk',
@@ -57,6 +59,23 @@ const messages = {
       agree: '我已阅读并同意',
       protocol: '《用户协议》',
       submit: '立即注册'
+    },
+    profile:{
+      title: '用户中心',
+      welcome: '欢迎',
+      changeAvatar: '修改头像',
+      changePassword: '修改密码',
+      changeUsername: '修改用户名',
+      confirmChange: '确认修改',
+      back: '返回',
+      selectNewAvatar: '选择新头像',
+      cancel: '取消',
+      chooseAvatar: '选择一个头像',
+      newPassword: '新密码',
+      confirmPassword: '确认新密码'
+    },
+    chat:{
+      welcome: '欢迎来到AniTalk!'
     }
   },
   en: {
@@ -70,7 +89,9 @@ const messages = {
       home: 'Home',
       download: 'Download',
       login: 'Login',
-      register: 'Sign Up'
+      register: 'Sign Up',
+      userCenter: 'User Center',
+      logout: 'Logout',
     },
     download: {
       title: 'Download ANiTalk',
@@ -115,6 +136,20 @@ const messages = {
       agree: 'I have read and agree to the',
       protocol: '《User Agreement》',
       submit: 'Register Now'
+    },
+    profile:{
+      title: 'User Center',
+      welcome: 'Welcome',
+      changeAvatar: 'Change Avatar',
+      changePassword: 'Change Password',
+      changeUsername: 'Change Username',
+      confirmChange: 'Confirm Change',
+      back: 'Back',
+      selectNewAvatar: 'Select New Avatar',
+      cancel: 'Cancel',
+      chooseAvatar: 'Choose an Avatar',
+      newPassword: 'New Password',
+      confirmPassword: 'Confirm New Password',
     }
   },
   ja: {
@@ -128,7 +163,9 @@ const messages = {
       home: 'ホーム',
       download: 'ダウンロード',
       login: 'ログイン',
-      register: '登録'
+      register: '登録',
+      userCenter: 'ユーザーセンター',
+      logout: 'ログアウト',
     },
     download: {
       title: 'ANiTalkをダウンロード',
@@ -173,6 +210,20 @@ const messages = {
       agree: '私は以下に同意します：',
       protocol: '《利用規約》',
       submit: '今すぐ登録'
+    },
+    profile: {
+      title: 'ユーザーセンター',
+      welcome: 'ようこそ',
+      changeAvatar: 'アバターを変更',
+      changePassword: 'パスワードを変更',
+      changeUsername: 'ユーザー名を変更',
+      confirmChange: '変更を確認',
+      back: '戻る',
+      selectNewAvatar: '新しいアバターを選択',
+      cancel: 'キャンセル',
+      chooseAvatar: 'アバターを選択',
+      newPassword: '新しいパスワード',
+      confirmPassword: '新しいパスワードを確認',
     }
   }
 }

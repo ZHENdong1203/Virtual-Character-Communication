@@ -3,17 +3,18 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 const isLoggedIn = ref(false)
-const userInfo = ref<{ username: string; avatarUrl: string } | null>(null)
+const userInfo = ref<{ userId: number; username: string; avatarUrl: string } | null>(null)
 
 const fetchUser = async () => {
   try {
-    const res = await axios.get('http://localhost:5000/me', {
+    const res = await axios.get('http://localhost:5000/user/me', {
       withCredentials: true
     })
     isLoggedIn.value = res.data.loggedIn
     userInfo.value = {
       username: res.data.username,
-      avatarUrl: res.data.avatarUrl
+      avatarUrl: res.data.avatarUrl,
+      userId: res.data.userId
     }
   } catch {
     isLoggedIn.value = false
