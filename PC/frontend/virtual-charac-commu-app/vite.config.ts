@@ -4,8 +4,15 @@ import tailwindcss from '@tailwindcss/vite'
 
 const base = process.env.VITE_BASE
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(),tailwindcss()],
-  base: base, 
+  plugins: [vue(), tailwindcss()],
+  base: base,
+  resolve: {
+    alias: {
+      crypto: 'crypto-browserify'
+    }
+  },
+  optimizeDeps: {
+    include: ['crypto-browserify']
+  }
 })
