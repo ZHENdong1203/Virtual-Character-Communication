@@ -147,27 +147,6 @@ class ModelManager {
                     await this.cubism2model.changeModelWithJSON(modelSettingPath, modelSetting);
                 }
             }
-            else {
-                if (!this.cubism5Path) {
-                    logger.error('No cubism5Path set, cannot load Cubism 5 Core.');
-                    return;
-                }
-                await loadExternalResource(this.cubism5Path, 'js');
-                const { AppDelegate: Cubism5Model } = await import('./cubism5/index.js');
-                this.cubism5model = new Cubism5Model();
-                if (this.currentModelVersion === 2) {
-                    this.cubism2model.destroy();
-                    this.resetCanvas();
-                }
-                if (this.currentModelVersion === 2 || !this.cubism5model.subdelegates.at(0)) {
-                    this.cubism5model.initialize();
-                    this.cubism5model.changeModel(modelSettingPath);
-                    this.cubism5model.run();
-                }
-                else {
-                    this.cubism5model.changeModel(modelSettingPath);
-                }
-            }
             logger.info(`Model ${modelSettingPath} (Cubism version ${version}) loaded`);
             this.currentModelVersion = version;
         }
